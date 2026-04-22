@@ -1,0 +1,183 @@
+================================================================================
+                    PANDUAN LENGKAP SISTEM ARAP POS
+                     (Sistem Manajemen Kasir Modern)
+================================================================================
+
+Dokumen ini adalah panduan teknis dan operasional untuk mengelola, menjalankan, 
+dan memodifikasi aplikasi ARAP POS. Harap dibaca dengan saksama.
+
+--------------------------------------------------------------------------------
+1. INFORMASI UMUM
+--------------------------------------------------------------------------------
+ARAP POS adalah sistem aplikasi kasir (Point of Sale) berbasis web yang dirancang 
+dengan antarmuka modern (Sidebar Glassmorphism) dan mendukung mode gelap (Dark Mode).
+Aplikasi ini dikembangkan menggunakan framework Laravel (PHP) dan telah mendukung 
+tampilan responsif untuk berbagai ukuran perangkat (PC, Tablet, Smartphone).
+
+Lokasi Proyek: C:\laragon\www\ARAP\
+
+
+--------------------------------------------------------------------------------
+2. PANDUAN MENJALANKAN APLIKASI
+--------------------------------------------------------------------------------
+Untuk menjalankan aplikasi secara lokal pada komputer Anda:
+1. Buka aplikasi Laragon.
+2. Klik tombol "Start All" dan pastikan layanan Apache dan MySQL berjalan (indikator berwarna hijau).
+3. Buka Terminal (Command Prompt / PowerShell).
+4. Arahkan ke direktori proyek:
+   cd C:\laragon\www\ARAP
+5. Jalankan perintah server lokal Laravel:
+   php artisan serve
+6. Buka peramban web (browser) seperti Google Chrome atau Microsoft Edge.
+7. Akses alamat berikut: http://127.0.0.1:8000
+
+
+--------------------------------------------------------------------------------
+3. INFORMASI MASUK (LOGIN) DEFAULT
+--------------------------------------------------------------------------------
+Aplikasi ini memiliki akun administrator (Owner) bawaan untuk masuk ke dalam sistem:
+
+Alamat Email : owner@cashier.com
+Kata Sandi   : password
+
+Akun ini memiliki hak akses penuh terhadap Dasbor, Kasir Utama, Riwayat Transaksi, 
+dan Kelola Produk.
+
+
+--------------------------------------------------------------------------------
+4. STRUKTUR MENU & TATA LETAK SIDEBAR
+--------------------------------------------------------------------------------
+Sistem ini menggunakan navigasi Sidebar di sebelah kiri. Berikut adalah 
+penjelasan masing-masing menu:
+
+- Dasbor             : Halaman ringkasan bisnis, menampilkan statistik pendapatan harian, 
+                       total transaksi, dan ketersediaan stok inventaris.
+- Kasir Utama        : Terminal penjualan utama tempat terjadinya proses transaksi 
+                       jual beli dengan pelanggan.
+- Riwayat Transaksi  : Daftar seluruh catatan transaksi operasional yang telah sukses diproses.
+- Kelola Produk      : Pusat kendali untuk menambah, mengubah, atau menghapus data 
+                       barang dan spesifikasi harga.
+
+
+--------------------------------------------------------------------------------
+5. FITUR RESPONSIF (AKSES DARI HP / TABLET)
+--------------------------------------------------------------------------------
+ARAP POS telah dioptimalkan secara otomatis untuk penggunaan di perangkat mobile:
+- Hamburger Menu : Pada layar kecil, sidebar akan disembunyikan. Klik ikon tiga
+                   garis horizontal (☰) di sudut kanan atas untuk membuka menu.
+- Terminal Kasir : Jika diakses melalui HP, terminal kasir otomatis berubah tata letaknya
+                   menjadi vertikal (daftar produk di atas, keranjang di bawah) 
+                   sehingga lebih nyaman dioperasikan dengan sentuhan.
+- Tabel Fleksibel: Tabel dengan data panjang (seperti Riwayat Transaksi) dapat 
+                   digeser ke kiri dan kanan tanpa merusak tampilan utama.
+
+
+--------------------------------------------------------------------------------
+6. CARA MENGUBAH TEMA & ESTETIKA (WARNA UTAMA)
+--------------------------------------------------------------------------------
+Desain antarmuka diatur menggunakan variabel CSS yang terpusat. Anda dapat mengubah 
+skema warna dengan sangat mudah:
+
+1. Buka file tata letak utama: 
+   C:\laragon\www\ARAP\resources\views\layouts\app.blade.php
+2. Cari bagian `:root` pada baris atas di dalam tag `<style>`.
+3. Anda akan melihat baris kode seperti:
+   --primary: #6366f1;
+   --bg-color: #0b0f1a;
+
+Contoh jika Anda ingin mengubah warna tema dari Biru/Ungu menjadi Hijau Zamrud:
+Ubah baris `--primary` menjadi:
+   --primary: #10b981;
+
+Jika ingin mengubah nama aplikasi (Branding):
+Masih di file `app.blade.php`, cari teks `<h2>ARAP POS</h2>` di dalam struktur 
+`<aside class="sidebar">` dan ganti menjadi nama bisnis Anda.
+
+
+--------------------------------------------------------------------------------
+7. CARA KERJA TERMINAL KASIR (TRANSAKSI)
+--------------------------------------------------------------------------------
+1. Masuk ke aplikasi dan pilih menu "Kasir Utama".
+2. Di sebelah kiri, Anda akan melihat Katalog Produk. Anda dapat menggunakan kolom pencarian.
+3. Klik pada produk yang ingin dibeli pelanggan. Produk akan otomatis masuk ke "Daftar Belanja" di sebelah kanan.
+4. Anda dapat mengatur jumlah barang di dalam Daftar Belanja.
+5. Pada kolom "Diterima (Rp)", masukkan jumlah uang yang diberikan oleh pelanggan.
+6. Sistem akan menghitung jumlah kembalian secara otomatis.
+7. Klik tombol "Konfirmasi Transaksi" untuk menyelesaikan pembayaran.
+8. Stok produk akan berkurang secara otomatis dan transaksi akan tercatat di menu "Riwayat Transaksi".
+
+
+--------------------------------------------------------------------------------
+8. PANDUAN MENAMBAH PRODUK BARU
+--------------------------------------------------------------------------------
+1. Masuk ke aplikasi dan pilih menu "Kelola Produk".
+2. Klik tombol "+ Tambah Produk Baru" di sudut kanan atas.
+3. Isi formulir spesifikasi produk:
+   - Nama Produk
+   - Kategori
+   - Harga Jual & Harga Modal
+   - Stok Awal & Batas Minimum Stok
+4. Klik tombol "Simpan Produk Baru".
+
+
+--------------------------------------------------------------------------------
+9. STRUKTUR DIREKTORI PENTING
+--------------------------------------------------------------------------------
+C:\laragon\www\ARAP\
+├── .env                    : Konfigurasi utama aplikasi (Database, Nama App, dll).
+├── app/
+│   ├── Http/Controllers/   : Tempat logika aplikasi berada (Otak sistem).
+│   └── Models/             : Struktur penghubung ke tabel database.
+├── database/
+│   ├── migrations/         : Skema pembuatan tabel database.
+│   └── seeders/            : Data awal (seperti akun default dan kategori awal).
+├── resources/
+│   └── views/              : SELURUH TAMPILAN ANTARMUKA (UI) ADA DI SINI.
+│       ├── layouts/        : Template utama yang memuat Sidebar dan Hamburger Menu.
+│       ├── cashier/        : Tampilan Terminal Penjualan.
+│       ├── products/       : Tampilan Daftar & Form Tambah Produk.
+│       └── ...
+└── routes/
+    └── web.php             : Pengaturan alamat URL aplikasi.
+
+
+--------------------------------------------------------------------------------
+10. KONFIGURASI DATABASE (.env)
+--------------------------------------------------------------------------------
+Jika Anda perlu mengubah koneksi database, buka file `.env` di folder utama.
+Perhatikan bagian berikut:
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=arap          <- Nama Database di MySQL/phpMyAdmin
+DB_USERNAME=root          <- Pengguna MySQL
+DB_PASSWORD=              <- Kata sandi MySQL (kosong jika default Laragon)
+
+Jika Anda mengubah nama database, jangan lupa untuk membuat database dengan 
+nama yang sama di phpMyAdmin (http://127.0.0.1:8888), lalu jalankan perintah:
+php artisan migrate
+
+
+--------------------------------------------------------------------------------
+11. PERINTAH ARTISAN YANG SERING DIGUNAKAN (MELALUI TERMINAL)
+--------------------------------------------------------------------------------
+php artisan serve
+- Menjalankan server lokal agar web dapat diakses.
+
+php artisan migrate
+- Menerapkan struktur tabel baru ke dalam database.
+
+php artisan migrate:fresh --seed
+- MENGHAPUS seluruh isi database dan mengisinya ulang dengan data bawaan. 
+- PERINGATAN: Jangan gunakan ini jika Anda sudah memiliki data toko yang nyata!
+
+php artisan optimize:clear
+- Membersihkan cache sistem. Sangat berguna jika perubahan tampilan/kode tidak 
+  muncul di peramban.
+
+
+================================================================================
+          Sistem ini telah dimodifikasi dan ditingkatkan kinerjanya.
+                    Selamat mengelola bisnis Anda!
+================================================================================
